@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Classificador de email</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="static/styles.css">
+    <script src="static/index.js" defer></script>
 </head>
 <body>
     <main>
         <h1>Classificar email</h1>
     <div>
-        <form id="classify-form">
-            <textarea id="email" rows="10" cols="50" placeholder="Cole o email aqui ou faça o upload"></textarea>
-            <input type="file" id="fileInput" accept=".txt, .pdf"/>
+        <form id="classify-form" action="/classify" method="POST" >
+            <textarea id="email"  name="email" rows="10" cols="50" placeholder="Cole o email aqui ou faça o upload"></textarea>
+            <input type="file" id="fileInput" accept=".txt, .pdf" name="emailFile"/>
             <button type="submit" id="form-button">Enviar</button>
         </form>
     </div>
