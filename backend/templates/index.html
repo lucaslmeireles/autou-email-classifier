@@ -6,29 +6,90 @@
     <title>Classificador de email</title>
     <link rel="stylesheet" href="static/styles.css" />
     <script src="static/index.js" defer></script>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    />
   </head>
   <body>
     <main>
-      <h1>Classificar email</h1>
-      <div>
-        <form id="classify-form" action="/classify" method="POST">
-          <textarea
-            id="email"
-            name="email"
-            rows="10"
-            cols="50"
-            placeholder="Cole o email aqui ou faça o upload"
-          ></textarea>
-          <input
-            type="file"
-            id="fileInput"
-            accept=".txt, .pdf"
-            name="emailFile"
-          />
-          <button type="submit" id="form-button">Enviar</button>
-        </form>
+      <div class="container">
+        <div class="header">
+          <h1>Classificador de Email</h1>
+        </div>
+
+        <div class="input-section">
+          <form id="classify-form" action="/classify" method="POST">
+            <div class="textarea-container">
+              <textarea
+                id="email"
+                name="email"
+                rows="10"
+                placeholder="Cole o conteúdo do email aqui..."
+              ></textarea>
+            </div>
+
+            <div class="file-upload-container">
+              <label for="fileInput" class="file-upload-label">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="17 8 12 3 7 8" />
+                  <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+                <span>Escolher arquivo</span>
+              </label>
+              <input
+                type="file"
+                id="fileInput"
+                accept=".txt, .pdf"
+                name="emailFile"
+                class="file-input"
+              />
+              <span id="file-name" class="file-name"></span>
+            </div>
+
+            <button type="submit" id="form-button">
+              <span>Classificar Email</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </button>
+          </form>
+        </div>
+
+        <div class="result"></div>
       </div>
-      <div class="result"></div>
     </main>
+    <script>
+      // Add file name display functionality
+      document
+        .getElementById("fileInput")
+        .addEventListener("change", function (e) {
+          const fileName =
+            e.target.files[0]?.name || "Nenhum arquivo selecionado";
+          document.getElementById("file-name").textContent = fileName;
+        });
+    </script>
   </body>
 </html>

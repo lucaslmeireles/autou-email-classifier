@@ -29,7 +29,7 @@ class EmailClassifier:
                 {
                     "role": "system",
                     "content": """
-                        YYou are a JSON-only email classifier API. 
+                        You are a JSON-only email classifier API. 
                     
                         Analyze the email content and classify it as 'productive' or 'unproductive'.
 
@@ -45,7 +45,8 @@ class EmailClassifier:
                         }
 
                         Quick responses must be in the same language as the analyzed email.
-                        DO NOT include any explanations or text outside the JSON object.F""",
+                        DO NOT include any explanations or text outside the JSON object.
+                        DO NOT wrap the JSON in markdown code blocks.""",
                 },
                 {
                     "role": "user",
@@ -60,8 +61,15 @@ class EmailClassifier:
             ],
             response_format={"type": "json_object"},
         )
-        print(response)
-        json_response = json.loads(response.choices[0].message.content)
+        
+        content = response.choices[0].message.content
+        # Remove any markdown formatting if present
+        if content.startswith('```json'):
+            content = content[7:-3]  # Remove ```json and ``` 
+        elif content.startswith('```'):
+            content = content[3:-3]  # Remove ``` and ```
+            
+        json_response = json.loads(content.strip())
         return json_response
     
     async def classify_file(self, file_path: str):
