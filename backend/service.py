@@ -60,7 +60,7 @@ class EmailClassifier:
             ],
             response_format={"type": "json_object"},
         )
-        # Parse the JSON string into a Python dictionary before returning
+        print(response)
         json_response = json.loads(response.choices[0].message.content)
         return json_response
     

@@ -35,10 +35,12 @@ form {
 }
 
 .result {
+    display: none;
     margin-top: 20px;
     background-color: #ffffffce;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 290px;
     padding: 10px;
+    
 }
