@@ -29,12 +29,12 @@ class EmailClassifier:
                 {
                     "role": "system",
                     "content": """
-                        You are a JSON-only email classifier API. 
+                        YYou are a JSON-only email classifier API. 
                     
                         Analyze the email content and classify it as 'productive' or 'unproductive'.
 
-                        Look for spam indicators like 'free', 'win', 'urgent', etc. and action verbs like 'buy', 'click', 'open'.
-                        Consider if the email is promotional or for an unimportant meeting.
+                        What is productive, an email talking about an important meeting, or a question about the system, a support ticket open.
+                        What is unproductive, thanks e-mails, meeting that dont include importante informations, like seminarys, felicitation e-mails.
 
                         YOU MUST RETURN ONLY A VALID JSON OBJECT with these exact fields:
                         {
@@ -45,7 +45,7 @@ class EmailClassifier:
                         }
 
                         Quick responses must be in the same language as the analyzed email.
-                        DO NOT include any explanations or text outside the JSON object.""",
+                        DO NOT include any explanations or text outside the JSON object.F""",
                 },
                 {
                     "role": "user",

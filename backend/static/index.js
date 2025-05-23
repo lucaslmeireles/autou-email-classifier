@@ -1,3 +1,60 @@
+/**
+ * Mounts the results in the result div
+ * @param {Object} data - The data to be mounted
+ */
+const mountResults = (data) => {
+  document.querySelector(".result").style.display = "block";
+  document.querySelector(".result").innerHTML = `
+                    <h2>Resultado</h2>
+                    <div class="classification-result">
+                        <p class="classification-result-text">Classificação:${
+                          data.classification || "N/A"
+                        }</p>
+                        ${
+                          data.accuracy
+                            ? `<p><strong>Eficiência:</strong> ${data.accuracy}</p>`
+                            : ""
+                        }
+                        ${
+                          data.keywords
+                            ? `<p><strong>Indicadores:</strong> ${data.keywords.join(
+                                ", "
+                              )}</p>
+                              <p class="classification-result-indicators">
+                                Com base nesses indicadores seu texto foi classificado
+                              </p>
+                              `
+                            : ""
+                        }
+                        ${
+                          data.quick_responses
+                            ? `<div class="quick-responses">
+                                <p><strong>Respostas Rápidas:</strong></p>
+                                <ul>${data.quick_responses
+                                  .map((resp) => `<li>${resp}</li>`)
+                                  .join("")}</ul>
+                             </div>`
+                            : ""
+                        }
+
+                    </div>
+                `;
+};
+/**
+ * Resets the form after a submission
+ */
+const resetForm = () => {
+  const form = document.getElementById("classify-form");
+  const fileInput = document.getElementById("fileInput");
+  form.reset();
+  fileInput.value = "";
+};
+
+/**
+ * handles the form submission
+ * @param {Event} event - The form submission event
+ * @returns {Promise<void>}
+ */
 const onSubmit = async (event) => {
   event.preventDefault();
   const form = event.target;
@@ -9,57 +66,24 @@ const onSubmit = async (event) => {
     return;
   }
 
-  console.log("Email content being sent:", emailContent);
+  //There're two endpoints, one for only text and one for file, in this IF statement
+  //we check wich one is the user sending
   if (emailFile) {
-    console.log("Email file being sent:", emailFile);
     const body = new FormData();
     body.append("file", emailFile);
     try {
       const response = await fetch("/uploadfile", {
         method: "POST",
-
         body: body,
       });
 
       if (response.ok) {
         const responseText = await response.text();
         const data = JSON.parse(responseText);
-
-        // Display all the response data in a more structured way
-        document.querySelector(".result").style.display = "block";
-        document.querySelector(".result").innerHTML = `
-                    <h2>Resultado</h2>
-                    <div class="classification-result">
-                        <p><strong>Classification:</strong> ${
-                          data.classification || "N/A"
-                        }</p>
-                        ${
-                          data.accuracy
-                            ? `<p><strong>Accuracy:</strong> ${data.accuracy}</p>`
-                            : ""
-                        }
-                        ${
-                          data.keywords
-                            ? `<p><strong>Keywords:</strong> ${data.keywords.join(
-                                ", "
-                              )}</p>`
-                            : ""
-                        }
-                        ${
-                          data.quick_responses
-                            ? `<div class="quick-responses">
-                                <p><strong>Quick Responses:</strong></p>
-                                <ul>${data.quick_responses
-                                  .map((resp) => `<li>${resp}</li>`)
-                                  .join("")}</ul>
-                             </div>`
-                            : ""
-                        }
-                    </div>
-                `;
+        mountResults(data);
+        resetForm();
       } else {
         const errorText = await response.text();
-        console.error("API Error:", errorText);
         let errorMessage = "Unknown error";
         try {
           const errorData = JSON.parse(errorText);
@@ -89,38 +113,8 @@ const onSubmit = async (event) => {
       if (response.ok) {
         const responseText = await response.text();
         const data = JSON.parse(responseText);
-
-        // Display all the response data in a more structured way
-        document.querySelector(".result").innerHTML = `
-                    <h2>Resultado</h2>
-                    <div class="classification-result">
-                        <p><strong>Classification:</strong> ${
-                          data.classification || "N/A"
-                        }</p>
-                        ${
-                          data.accuracy
-                            ? `<p><strong>Accuracy:</strong> ${data.accuracy}</p>`
-                            : ""
-                        }
-                        ${
-                          data.keywords
-                            ? `<p><strong>Keywords:</strong> ${data.keywords.join(
-                                ", "
-                              )}</p>`
-                            : ""
-                        }
-                        ${
-                          data.quick_responses
-                            ? `<div class="quick-responses">
-                                <p><strong>Quick Responses:</strong></p>
-                                <ul>${data.quick_responses
-                                  .map((resp) => `<li>${resp}</li>`)
-                                  .join("")}</ul>
-                             </div>`
-                            : ""
-                        }
-                    </div>
-                `;
+        mountResults(data);
+        resetForm();
       } else {
         const errorText = await response.text();
         console.error("API Error:", errorText);
